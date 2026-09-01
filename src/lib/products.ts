@@ -87,4 +87,4 @@ export const perfumes: Perfume[] = [
   },
 ];
 
-export const featuredPerfume = perfumes.find((p) => p.id === "vela-nocturne")!;
+export const featuredPerfume = perfumes.find((p) => p.id === "vela-nocturne") ?? perfumes[0];
