@@ -116,3 +116,19 @@
 @utility shadow-cta {
   box-shadow: 0 10px 26px oklch(0.45 0.1 265 / 0.35);
 }
+
+@utility ambient-one {
+  background: radial-gradient(circle, oklch(0.86 0.04 265) 0%, transparent 70%);
+}
+
+@utility ambient-two {
+  background: radial-gradient(circle, oklch(0.93 0.03 85) 0%, transparent 70%);
+}
+
+@utility ambient-three {
+  background: radial-gradient(circle, oklch(0.89 0.035 305) 0%, transparent 70%);
+}
+
+@utility ambient-gold {
+  background: radial-gradient(circle, oklch(0.72 0.1 80 / 0.28), transparent 70%);
+}

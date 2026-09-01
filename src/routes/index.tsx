@@ -80,25 +80,16 @@ function Index() {
       <div className="aurora fixed inset-0 -z-10" aria-hidden="true" />
       <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden="true">
         <div
-          className="absolute -left-20 -top-16 size-72 rounded-full blur-lg"
-          style={{
-            background:
-              "radial-gradient(circle, #c3d2ef 0%, rgba(195,210,239,0) 70%)",
-          }}
+          className="ambient-one absolute -left-20 -top-16 size-72 rounded-full blur-lg"
+
         />
         <div
-          className="absolute -right-24 top-40 size-72 rounded-full blur-lg"
-          style={{
-            background:
-              "radial-gradient(circle, #efe4cf 0%, rgba(239,228,207,0) 70%)",
-          }}
+          className="ambient-two absolute -right-24 top-40 size-72 rounded-full blur-lg"
+
         />
         <div
-          className="absolute bottom-10 left-1/3 size-64 rounded-full blur-xl"
-          style={{
-            background:
-              "radial-gradient(circle, #dcd4ea 0%, rgba(220,212,234,0) 70%)",
-          }}
+          className="ambient-three absolute bottom-10 left-1/3 size-64 rounded-full blur-xl"
+
         />
       </div>
 
@@ -142,7 +133,7 @@ function Header({
 }) {
   return (
     <header className="sticky top-0 z-30">
-      <div className="glass mx-auto flex max-w-[calc(28rem+1.5rem)] items-center justify-between rounded-2xl border border-white/50 px-4 py-3 shadow-[0_8px_30px_rgba(66,86,138,0.12)]">
+      <div className="glass mx-auto flex max-w-[calc(28rem+1.5rem)] items-center justify-between rounded-2xl border border-border px-4 py-3 shadow-[0_8px_30px_rgba(66,86,138,0.12)]">
         <div className="leading-none">
           <p className="font-display text-[22px] tracking-[0.18em] text-branddeep">
             MAISON&nbsp;ÉTHERE
@@ -153,14 +144,14 @@ function Header({
         </div>
         <button
           onClick={onCartOpen}
-          className="glass relative grid size-11 place-items-center rounded-full border border-white/60 shadow-[0_4px_16px_rgba(66,86,138,0.14)]"
+          className="glass relative grid size-11 place-items-center rounded-full border border-border shadow-[0_4px_16px_rgba(66,86,138,0.14)]"
           aria-label="Open cart"
         >
           <span className="text-lg" aria-hidden="true">
             ♛
           </span>
           {cartCount > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 grid size-5 place-items-center rounded-full bg-gold text-[10px] font-medium text-white">
+            <span className="absolute -right-0.5 -top-0.5 grid size-5 place-items-center rounded-full bg-gold text-[10px] font-medium text-primary-foreground">
               {cartCount}
             </span>
           )}
@@ -178,13 +169,10 @@ function Hero({
   onAdd: () => void;
 }) {
   return (
-    <section className="glass relative mt-4 overflow-hidden rounded-3xl border border-white/60 p-5 shadow-glass">
+    <section className="glass relative mt-4 overflow-hidden rounded-3xl border border-border p-5 shadow-glass">
       <div
-        className="absolute -right-8 -top-8 size-32 rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(198,161,90,0.28), rgba(198,161,90,0) 70%)",
-        }}
+        className="ambient-gold absolute -right-8 -top-8 size-32 rounded-full"
+
         aria-hidden="true"
       />
       <div className="flex items-center gap-4">
@@ -216,7 +204,7 @@ function Hero({
       </div>
       <button
         onClick={onAdd}
-        className="mt-5 h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-white shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
+        className="mt-5 h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
       >
         Add to Cart
       </button>
@@ -248,7 +236,7 @@ function Collection({
         {perfumes.map((p) => (
           <article
             key={p.id}
-            className="glass rounded-2xl border border-white/60 p-3 shadow-card transition-transform duration-300 hover:-translate-y-1"
+            className="glass rounded-2xl border border-border p-3 shadow-card transition-transform duration-300 hover:-translate-y-1"
           >
             <button
               onClick={() => onSelect(p)}
@@ -279,7 +267,7 @@ function Collection({
               <span className="text-[13px] text-branddeep">${p.price}</span>
               <button
                 onClick={() => onQuickAdd(p)}
-                className="grid size-9 place-items-center rounded-full bg-branddeep text-lg text-white shadow-[0_6px_16px_rgba(66,86,138,0.3)] transition-transform hover:scale-105"
+                className="grid size-9 place-items-center rounded-full bg-branddeep text-lg text-primary-foreground shadow-[0_6px_16px_rgba(66,86,138,0.3)] transition-transform hover:scale-105"
                 aria-label={`Add ${p.name} to cart`}
               >
                 +
@@ -306,7 +294,7 @@ function ProductDetail({
   return (
     <section
       id="detail"
-      className="glass mt-8 rounded-3xl border border-white/60 p-5 shadow-glass"
+      className="glass mt-8 rounded-3xl border border-border p-5 shadow-glass"
     >
       <div className="flex gap-4">
         <img
@@ -333,14 +321,14 @@ function ProductDetail({
         {perfume.noteTags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full border border-white/60 bg-white/50 px-3 py-1.5 text-[11px] tracking-wide text-branddeep"
+            className="rounded-full border border-border bg-card/50 px-3 py-1.5 text-[11px] tracking-wide text-branddeep"
           >
             {tag}
           </span>
         ))}
       </div>
       <div className="mt-4 flex items-center gap-3">
-        <div className="glass flex items-center rounded-full border border-white/60 px-1 py-1">
+        <div className="glass flex items-center rounded-full border border-border px-1 py-1">
           <button
             onClick={() => onQtyChange(Math.max(1, qty - 1))}
             className="grid size-9 place-items-center rounded-full text-lg text-branddeep"
@@ -359,7 +347,7 @@ function ProductDetail({
         </div>
         <button
           onClick={onAdd}
-          className="h-12 flex-1 rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-white shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
+          className="h-12 flex-1 rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
         >
           Add to Cart — ${perfume.price * qty}
         </button>
@@ -390,7 +378,7 @@ function CartDrawer({
     >
       <div
         onClick={onClose}
-        className={`absolute inset-0 bg-branddeep/20 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-primary/20 backdrop-blur-sm transition-opacity duration-300 ${
           open ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -399,7 +387,7 @@ function CartDrawer({
           open ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <div className="glass mx-auto max-w-md rounded-t-3xl border border-white/60 p-4 shadow-[0_-14px_44px_rgba(66,86,138,0.22)]">
+        <div className="glass mx-auto max-w-md rounded-t-3xl border border-border p-4 shadow-[0_-14px_44px_rgba(66,86,138,0.22)]">
           <div className="flex items-center justify-between">
             <p className="text-[11px] uppercase tracking-[0.3em] text-branddeep/60">
               Your Cart · {cart.reduce((sum, line) => sum + line.qty, 0)}
@@ -459,7 +447,7 @@ function CartDrawer({
                   </span>
                 </div>
               ))}
-              <div className="flex items-center justify-between border-t border-white/50 pt-3">
+              <div className="flex items-center justify-between border-t border-border pt-3">
                 <span className="text-[12px] uppercase tracking-[0.2em] text-ink/60">
                   Subtotal
                 </span>
@@ -467,7 +455,7 @@ function CartDrawer({
                   ${subtotal}
                 </span>
               </div>
-              <button className="h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-white shadow-cta">
+              <button className="h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta">
                 Checkout
               </button>
               <p className="text-center text-[10px] uppercase tracking-[0.2em] text-ink/40">
