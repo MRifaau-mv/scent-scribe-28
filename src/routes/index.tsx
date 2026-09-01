@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-酒    ],
+],
   }),
   component: Index,
 });
@@ -274,7 +274,7 @@ function Collection({
                 {p.name} {p.italicName && <span className="italic">{p.italicName}</span>}
               </h3>
               <p className="mt-0.5 text-[11px] text-ink/55">{p.notes}</p>
-            </div>
+            </button>
             <div className="mt-2 flex items-center justify-between">
               <span className="text-[13px] text-branddeep">${p.price}</span>
               <button
