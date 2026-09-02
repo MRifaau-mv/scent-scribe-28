@@ -216,7 +216,7 @@ function ProductSlider({
                 loading={i === 0 ? "eager" : "lazy"}
                 className="h-full w-full object-cover"
               />
-              <h2 className="glass absolute bottom-3 right-3 rounded-full border border-border px-3.5 py-1.5 font-display text-[15px] text-branddeep shadow-[0_4px_16px_rgba(66,86,138,0.16)]">
+              <h2 className="glass absolute bottom-3 left-3 rounded-full border border-border px-3.5 py-1.5 font-display text-[15px] text-branddeep shadow-[0_4px_16px_rgba(66,86,138,0.16)]">
                 {p.name}
                 {p.italicName && <span className="italic"> {p.italicName}</span>}
               </h2>
