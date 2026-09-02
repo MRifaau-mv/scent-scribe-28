@@ -199,63 +199,23 @@ function ProductSlider({
         className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {perfumes.map((p, i) => (
-          <article
+          <button
             key={p.id}
-            className={`glass w-[82%] shrink-0 snap-center overflow-hidden rounded-3xl border border-border shadow-glass transition-opacity duration-500 ${
+            onClick={() => onSelect(p)}
+            aria-label={`View details of ${p.name}`}
+            className={`w-[82%] shrink-0 snap-center overflow-hidden rounded-3xl border border-border shadow-glass transition-opacity duration-500 ${
               i === active ? "opacity-100" : "opacity-70"
             }`}
           >
-            <button
-              onClick={() => onSelect(p)}
-              className="block w-full text-left"
-              aria-label={`View details of ${p.name}`}
-            >
-              <div className="relative aspect-[4/3] w-full overflow-hidden">
-                <img
-                  src={p.image}
-                  alt={`${p.name} ${p.italicName ?? ""} flacon`}
-                  width={1024}
-                  height={1024}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  className="h-full w-full object-cover"
-                />
-                <span className="glass absolute bottom-3 left-3 rounded-full border border-border px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-gold">
-                  {p.number} — {p.family}
-                </span>
-              </div>
-              <div className="p-4">
-                <h2 className="font-display text-[30px] leading-[0.95] text-ink">
-                  {p.name}
-                  {p.italicName && (
-                    <span className="italic text-branddeep"> {p.italicName}</span>
-                  )}
-                </h2>
-                <p className="mt-1.5 text-[12px] leading-relaxed text-ink/60">
-                  {p.notes}
-                </p>
-              </div>
-            </button>
-            <div className="flex items-center justify-between px-4 pb-4">
-              <span className="font-display text-[19px] text-branddeep">
-                ${p.price}
-              </span>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => onSelect(p)}
-                  className="h-10 rounded-full border border-border bg-card/50 px-4 text-[11px] uppercase tracking-[0.2em] text-branddeep transition-transform hover:-translate-y-0.5"
-                >
-                  View
-                </button>
-                <button
-                  onClick={() => onQuickAdd(p)}
-                  className="grid size-10 place-items-center rounded-full bg-branddeep text-lg text-primary-foreground shadow-[0_6px_16px_rgba(66,86,138,0.3)] transition-transform hover:scale-105"
-                  aria-label={`Add ${p.name} to cart`}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </article>
+            <img
+              src={p.image}
+              alt={`${p.name} ${p.italicName ?? ""} flacon`}
+              width={1024}
+              height={1024}
+              loading={i === 0 ? "eager" : "lazy"}
+              className="aspect-[4/5] h-full w-full object-cover"
+            />
+          </button>
         ))}
       </div>
 
