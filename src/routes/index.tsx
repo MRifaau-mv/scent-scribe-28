@@ -10,11 +10,11 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Maison Éthère — Luxury Fragrance Atelier",
+        title: "Avéline — Luxury Fragrance Atelier",
         description:
           "A small house of slow-made eaux de parfum. Discover Véla Nocturne and the collection — amber woods, damask rose, wild incense.",
       },
-      { property: "og:title", content: "Maison Éthère — Luxury Fragrance Atelier" },
+      { property: "og:title", content: "Avéline — Luxury Fragrance Atelier" },
       {
         property: "og:description",
         content:
@@ -136,7 +136,7 @@ function Header({
       <div className="glass mx-auto flex max-w-[calc(28rem+1.5rem)] items-center justify-between rounded-2xl border border-border px-4 py-3 shadow-[0_8px_30px_rgba(66,86,138,0.12)]">
         <div className="leading-none">
           <p className="font-display text-[22px] tracking-[0.18em] text-branddeep">
-            MAISON&nbsp;ÉTHERE
+            AVÉLINE
           </p>
           <p className="mt-1 text-[9px] uppercase tracking-[0.42em] text-branddeep/55">
             Fragrance Atelier
@@ -191,7 +191,7 @@ function Hero({
             {perfume.name}
             <br />
             <span className="italic text-branddeep">
-              {perfume.italicName ?? "Éthérée"}
+              {perfume.italicName ?? "Avéline"}
             </span>
           </h1>
           <p className="mt-3 text-[12px] leading-relaxed text-ink/60">
