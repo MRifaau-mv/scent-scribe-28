@@ -213,7 +213,7 @@ function ProductSlider({
               width={1024}
               height={1024}
               loading={i === 0 ? "eager" : "lazy"}
-              className="aspect-[4/5] h-full w-full object-cover"
+              className="aspect-square h-full w-full object-cover"
             />
           </button>
         ))}
