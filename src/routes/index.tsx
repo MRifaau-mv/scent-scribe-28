@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   perfumes,
@@ -33,9 +33,9 @@ interface CartLine {
 }
 
 function Index() {
-  const [selected, setSelected] = useState<Perfume>(featuredPerfume);
   const [cart, setCart] = useState<CartLine[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [viewing, setViewing] = useState<Perfume | null>(null);
   const [detailQty, setDetailQty] = useState(1);
 
   const cartCount = cart.reduce((sum, line) => sum + line.qty, 0);
@@ -66,12 +66,9 @@ function Index() {
     );
   };
 
-  const selectPerfume = (perfume: Perfume) => {
-    setSelected(perfume);
+  const openDetails = (perfume: Perfume) => {
     setDetailQty(1);
-    document
-      .getElementById("detail")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setViewing(perfume);
   };
 
   return (
@@ -100,18 +97,23 @@ function Index() {
 
         <Collection
           perfumes={perfumes}
-          selectedId={selected.id}
-          onSelect={selectPerfume}
+          onSelect={openDetails}
           onQuickAdd={(p) => addToCart(p, 1)}
         />
+      </main>
 
-        <ProductDetail
-          perfume={selected}
+      {viewing && (
+        <PerfumeModal
+          perfume={viewing}
           qty={detailQty}
           onQtyChange={setDetailQty}
-          onAdd={() => addToCart(selected, detailQty)}
+          onClose={() => setViewing(null)}
+          onAdd={() => {
+            addToCart(viewing, detailQty);
+            setViewing(null);
+          }}
         />
-      </main>
+      )}
 
       <CartDrawer
         open={cartOpen}
@@ -214,12 +216,10 @@ function Hero({
 
 function Collection({
   perfumes,
-  selectedId,
   onSelect,
   onQuickAdd,
 }: {
   perfumes: Perfume[];
-  selectedId: string;
   onSelect: (p: Perfume) => void;
   onQuickAdd: (p: Perfume) => void;
 }) {
@@ -250,9 +250,7 @@ function Collection({
                   loading="lazy"
                   width={1024}
                   height={1024}
-                  className={`h-full w-full object-cover transition-transform duration-500 hover:scale-105 ${
-                    p.id === selectedId ? "ring-2 ring-gold" : ""
-                  }`}
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                 />
               </div>
               <p className="mt-3 text-[9px] uppercase tracking-[0.24em] text-gold">
@@ -280,79 +278,117 @@ function Collection({
   );
 }
 
-function ProductDetail({
+function PerfumeModal({
   perfume,
   qty,
   onQtyChange,
+  onClose,
   onAdd,
 }: {
   perfume: Perfume;
   qty: number;
   onQtyChange: (qty: number) => void;
+  onClose: () => void;
   onAdd: () => void;
 }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
   return (
-    <section
-      id="detail"
-      className="glass mt-8 rounded-3xl border border-border p-5 shadow-glass"
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${perfume.name} details`}
     >
-      <div className="flex gap-4">
-        <img
-          src={perfume.image}
-          alt={`${perfume.name} bottle detail`}
-          loading="lazy"
-          width={1024}
-          height={1024}
-          className="size-24 shrink-0 rounded-2xl object-cover shadow-card"
-        />
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">
-            Now viewing
-          </p>
-          <h3 className="font-display text-[24px] leading-tight text-ink">
-            {perfume.name} {perfume.italicName && <span className="italic">{perfume.italicName}</span>}
-          </h3>
-          <p className="mt-1 text-[12px] leading-relaxed text-ink/60">
-            {perfume.notes}. {perfume.size}.
-          </p>
-        </div>
-      </div>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {perfume.noteTags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border border-border bg-card/50 px-3 py-1.5 text-[11px] tracking-wide text-branddeep"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-      <div className="mt-4 flex items-center gap-3">
-        <div className="glass flex items-center rounded-full border border-border px-1 py-1">
-          <button
-            onClick={() => onQtyChange(Math.max(1, qty - 1))}
-            className="grid size-9 place-items-center rounded-full text-lg text-branddeep"
-            aria-label="Decrease quantity"
-          >
-            −
-          </button>
-          <span className="w-8 text-center text-sm">{qty}</span>
-          <button
-            onClick={() => onQtyChange(Math.min(9, qty + 1))}
-            className="grid size-9 place-items-center rounded-full text-lg text-branddeep"
-            aria-label="Increase quantity"
-          >
-            +
-          </button>
-        </div>
+      <div
+        onClick={onClose}
+        className="absolute inset-0 bg-primary/25 backdrop-blur-md"
+      />
+      <div className="glass relative mx-3 mb-3 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-border p-5 shadow-[0_24px_70px_rgba(66,86,138,0.3)] sm:mx-0 sm:mb-0">
         <button
-          onClick={onAdd}
-          className="h-12 flex-1 rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
+          onClick={onClose}
+          className="glass absolute right-4 top-4 z-10 grid size-10 place-items-center rounded-full border border-border text-branddeep shadow-[0_4px_16px_rgba(66,86,138,0.18)]"
+          aria-label="Close details"
         >
-          Add to Cart — ${perfume.price * qty}
+          ✕
         </button>
+
+        <div className="relative overflow-hidden rounded-2xl">
+          <img
+            src={perfume.image}
+            alt={`${perfume.name} ${perfume.italicName ?? ""} flacon`}
+            width={1024}
+            height={1024}
+            className="aspect-[4/3] w-full object-cover shadow-card"
+          />
+          <span className="glass absolute bottom-3 left-3 rounded-full border border-border px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-gold">
+            {perfume.number} — {perfume.family}
+          </span>
+        </div>
+
+        <h3 className="mt-4 font-display text-[34px] leading-[0.95] text-ink">
+          {perfume.name}
+          <br />
+          <span className="italic text-branddeep">
+            {perfume.italicName ?? "Avéline"}
+          </span>
+        </h3>
+        <p className="mt-3 text-[13px] leading-relaxed text-ink/65">
+          {perfume.description}
+        </p>
+        <p className="mt-2 text-[12px] leading-relaxed text-ink/55">
+          <span className="uppercase tracking-[0.2em] text-gold">Notes</span>{" "}
+          {perfume.notes}. {perfume.size}.
+        </p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {perfume.noteTags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-border bg-card/50 px-3 py-1.5 text-[11px] tracking-wide text-branddeep"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-5 flex items-center gap-3">
+          <div className="glass flex items-center rounded-full border border-border px-1 py-1">
+            <button
+              onClick={() => onQtyChange(Math.max(1, qty - 1))}
+              className="grid size-9 place-items-center rounded-full text-lg text-branddeep"
+              aria-label="Decrease quantity"
+            >
+              −
+            </button>
+            <span className="w-8 text-center text-sm">{qty}</span>
+            <button
+              onClick={() => onQtyChange(Math.min(9, qty + 1))}
+              className="grid size-9 place-items-center rounded-full text-lg text-branddeep"
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
+          <button
+            onClick={onAdd}
+            className="h-12 flex-1 rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            Add to Cart — ${perfume.price * qty}
+          </button>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 
