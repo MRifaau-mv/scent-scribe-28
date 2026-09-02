@@ -163,53 +163,120 @@ function Header({
   );
 }
 
-function Hero({
-  perfume,
-  onAdd,
+function ProductSlider({
+  perfumes,
+  onSelect,
+  onQuickAdd,
 }: {
-  perfume: Perfume;
-  onAdd: () => void;
+  perfumes: Perfume[];
+  onSelect: (p: Perfume) => void;
+  onQuickAdd: (p: Perfume) => void;
 }) {
-  return (
-    <section className="glass relative mt-4 overflow-hidden rounded-3xl border border-border p-5 shadow-glass">
-      <div
-        className="ambient-gold absolute -right-8 -top-8 size-32 rounded-full"
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
 
-        aria-hidden="true"
-      />
-      <div className="flex items-center gap-4">
-        <img
-          src={perfume.image}
-          alt={`${perfume.name} ${perfume.italicName ?? ""} flacon`}
-          width={1024}
-          height={1024}
-          className="size-28 shrink-0 rounded-2xl object-cover shadow-card"
-        />
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.34em] text-gold">
-            {perfume.number} — {perfume.family}
-          </p>
-          <h1 className="mt-2 font-display text-[40px] leading-[0.92] text-ink">
-            {perfume.name}
-            <br />
-            <span className="italic text-branddeep">
-              {perfume.italicName ?? "Avéline"}
-            </span>
-          </h1>
-          <p className="mt-3 text-[12px] leading-relaxed text-ink/60">
-            {perfume.description}
-          </p>
-          <p className="mt-3 font-display text-[20px] text-branddeep">
-            ${perfume.price}
-          </p>
-        </div>
-      </div>
-      <button
-        onClick={onAdd}
-        className="mt-5 h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
+  const stepOf = (el: HTMLDivElement) =>
+    el.firstElementChild instanceof HTMLElement
+      ? el.firstElementChild.offsetWidth + 12
+      : el.clientWidth;
+
+  const handleScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setActive(
+      Math.min(
+        perfumes.length - 1,
+        Math.max(0, Math.round(el.scrollLeft / stepOf(el))),
+      ),
+    );
+  };
+
+  const goTo = (i: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollTo({ left: i * stepOf(el), behavior: "smooth" });
+  };
+
+  return (
+    <section className="mt-4" aria-label="Featured fragrances">
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        Add to Cart
-      </button>
+        {perfumes.map((p, i) => (
+          <article
+            key={p.id}
+            className={`glass w-[82%] shrink-0 snap-center overflow-hidden rounded-3xl border border-border shadow-glass transition-opacity duration-500 ${
+              i === active ? "opacity-100" : "opacity-70"
+            }`}
+          >
+            <button
+              onClick={() => onSelect(p)}
+              className="block w-full text-left"
+              aria-label={`View details of ${p.name}`}
+            >
+              <div className="relative aspect-[4/3] w-full overflow-hidden">
+                <img
+                  src={p.image}
+                  alt={`${p.name} ${p.italicName ?? ""} flacon`}
+                  width={1024}
+                  height={1024}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  className="h-full w-full object-cover"
+                />
+                <span className="glass absolute bottom-3 left-3 rounded-full border border-border px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-gold">
+                  {p.number} — {p.family}
+                </span>
+              </div>
+              <div className="p-4">
+                <h2 className="font-display text-[30px] leading-[0.95] text-ink">
+                  {p.name}
+                  {p.italicName && (
+                    <span className="italic text-branddeep"> {p.italicName}</span>
+                  )}
+                </h2>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-ink/60">
+                  {p.notes}
+                </p>
+              </div>
+            </button>
+            <div className="flex items-center justify-between px-4 pb-4">
+              <span className="font-display text-[19px] text-branddeep">
+                ${p.price}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => onSelect(p)}
+                  className="h-10 rounded-full border border-border bg-card/50 px-4 text-[11px] uppercase tracking-[0.2em] text-branddeep transition-transform hover:-translate-y-0.5"
+                >
+                  View
+                </button>
+                <button
+                  onClick={() => onQuickAdd(p)}
+                  className="grid size-10 place-items-center rounded-full bg-branddeep text-lg text-primary-foreground shadow-[0_6px_16px_rgba(66,86,138,0.3)] transition-transform hover:scale-105"
+                  aria-label={`Add ${p.name} to cart`}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="mt-3 flex items-center justify-center gap-2">
+        {perfumes.map((p, i) => (
+          <button
+            key={p.id}
+            onClick={() => goTo(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === active ? "w-6 bg-branddeep" : "w-1.5 bg-branddeep/30"
+            }`}
+          />
+        ))}
+      </div>
     </section>
   );
 }
