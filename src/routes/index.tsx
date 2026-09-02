@@ -89,11 +89,7 @@ function Index() {
       <Header cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
 
       <main className="mx-auto max-w-md px-3 pb-40">
-        <ProductSlider
-          perfumes={perfumes}
-          onSelect={openDetails}
-          onQuickAdd={(p) => addToCart(p, 1)}
-        />
+        <ProductSlider perfumes={perfumes} onSelect={openDetails} />
 
         <Collection
           perfumes={perfumes}
@@ -166,11 +162,9 @@ function Header({
 function ProductSlider({
   perfumes,
   onSelect,
-  onQuickAdd,
 }: {
   perfumes: Perfume[];
   onSelect: (p: Perfume) => void;
-  onQuickAdd: (p: Perfume) => void;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
