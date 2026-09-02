@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  perfumes,
-  featuredPerfume,
-  type Perfume,
-} from "@/lib/products";
+import { perfumes, type Perfume } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -93,7 +89,11 @@ function Index() {
       <Header cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
 
       <main className="mx-auto max-w-md px-3 pb-40">
-        <Hero perfume={featuredPerfume} onAdd={() => addToCart(featuredPerfume, 1)} />
+        <ProductSlider
+          perfumes={perfumes}
+          onSelect={openDetails}
+          onQuickAdd={(p) => addToCart(p, 1)}
+        />
 
         <Collection
           perfumes={perfumes}
