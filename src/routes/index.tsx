@@ -33,9 +33,9 @@ interface CartLine {
 }
 
 function Index() {
-  const [selected, setSelected] = useState<Perfume>(featuredPerfume);
   const [cart, setCart] = useState<CartLine[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [viewing, setViewing] = useState<Perfume | null>(null);
   const [detailQty, setDetailQty] = useState(1);
 
   const cartCount = cart.reduce((sum, line) => sum + line.qty, 0);
@@ -66,12 +66,9 @@ function Index() {
     );
   };
 
-  const selectPerfume = (perfume: Perfume) => {
-    setSelected(perfume);
+  const openDetails = (perfume: Perfume) => {
     setDetailQty(1);
-    document
-      .getElementById("detail")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setViewing(perfume);
   };
 
   return (
@@ -100,18 +97,23 @@ function Index() {
 
         <Collection
           perfumes={perfumes}
-          selectedId={selected.id}
-          onSelect={selectPerfume}
+          onSelect={openDetails}
           onQuickAdd={(p) => addToCart(p, 1)}
         />
+      </main>
 
-        <ProductDetail
-          perfume={selected}
+      {viewing && (
+        <PerfumeModal
+          perfume={viewing}
           qty={detailQty}
           onQtyChange={setDetailQty}
-          onAdd={() => addToCart(selected, detailQty)}
+          onClose={() => setViewing(null)}
+          onAdd={() => {
+            addToCart(viewing, detailQty);
+            setViewing(null);
+          }}
         />
-      </main>
+      )}
 
       <CartDrawer
         open={cartOpen}
