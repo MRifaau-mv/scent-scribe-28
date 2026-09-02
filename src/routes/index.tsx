@@ -88,7 +88,7 @@ function Index() {
 
       <Header cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
 
-      <main className="mx-auto max-w-md px-3 pb-40">
+      <main className="mx-auto max-w-md px-3 pb-40 sm:max-w-3xl sm:px-6 lg:max-w-5xl">
         <ProductSlider perfumes={perfumes} onSelect={openDetails} />
 
         <Collection
@@ -131,7 +131,7 @@ function Header({
 }) {
   return (
     <header className="sticky top-0 z-30">
-      <div className="glass mx-auto flex max-w-[calc(28rem+1.5rem)] items-center justify-between rounded-2xl border border-border px-4 py-3 shadow-[0_8px_30px_rgba(66,86,138,0.12)]">
+      <div className="glass mx-auto flex max-w-[calc(28rem+1.5rem)] items-center justify-between rounded-2xl border border-border px-4 py-3 shadow-[0_8px_30px_rgba(66,86,138,0.12)] sm:max-w-[calc(48rem+3rem)] sm:px-6 lg:max-w-[calc(64rem+3rem)]">
         <div className="leading-none">
           <p className="font-display text-[22px] tracking-[0.18em] text-branddeep">
             AVÉLINE
