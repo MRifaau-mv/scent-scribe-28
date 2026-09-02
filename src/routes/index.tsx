@@ -207,14 +207,20 @@ function ProductSlider({
               i === active ? "opacity-100" : "opacity-70"
             }`}
           >
-            <img
-              src={p.image}
-              alt={`${p.name} ${p.italicName ?? ""} flacon`}
-              width={1024}
-              height={1024}
-              loading={i === 0 ? "eager" : "lazy"}
-              className="aspect-square h-full w-full object-cover"
-            />
+            <div className="relative aspect-[4/3] w-full overflow-hidden">
+              <img
+                src={p.image}
+                alt={`${p.name} ${p.italicName ?? ""} flacon`}
+                width={1024}
+                height={1024}
+                loading={i === 0 ? "eager" : "lazy"}
+                className="h-full w-full object-cover"
+              />
+              <h2 className="glass absolute bottom-3 right-3 rounded-full border border-border px-3.5 py-1.5 font-display text-[15px] text-branddeep shadow-[0_4px_16px_rgba(66,86,138,0.16)]">
+                {p.name}
+                {p.italicName && <span className="italic"> {p.italicName}</span>}
+              </h2>
+            </div>
           </button>
         ))}
       </div>
