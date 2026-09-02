@@ -88,7 +88,7 @@ function Index() {
 
       <Header cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
 
-      <main className="mx-auto max-w-md px-3 pb-40">
+      <main className="mx-auto max-w-md px-3 pb-40 sm:max-w-3xl sm:px-6 lg:max-w-5xl">
         <ProductSlider perfumes={perfumes} onSelect={openDetails} />
 
         <Collection
@@ -131,7 +131,7 @@ function Header({
 }) {
   return (
     <header className="sticky top-0 z-30">
-      <div className="glass mx-auto flex max-w-[calc(28rem+1.5rem)] items-center justify-between rounded-2xl border border-border px-4 py-3 shadow-[0_8px_30px_rgba(66,86,138,0.12)]">
+      <div className="glass mx-auto flex max-w-[calc(28rem+1.5rem)] items-center justify-between rounded-2xl border border-border px-4 py-3 shadow-[0_8px_30px_rgba(66,86,138,0.12)] sm:max-w-[calc(48rem+3rem)] sm:px-6 lg:max-w-[calc(64rem+3rem)]">
         <div className="leading-none">
           <p className="font-display text-[22px] tracking-[0.18em] text-branddeep">
             AVÉLINE
@@ -203,7 +203,7 @@ function ProductSlider({
             key={p.id}
             onClick={() => onSelect(p)}
             aria-label={`View details of ${p.name}`}
-            className={`w-[82%] shrink-0 snap-center overflow-hidden rounded-3xl border border-border shadow-glass transition-opacity duration-500 ${
+            className={`w-[82%] shrink-0 snap-center overflow-hidden rounded-3xl border border-border shadow-glass transition-opacity duration-500 sm:w-[52%] lg:w-[40%] ${
               i === active ? "opacity-100" : "opacity-70"
             }`}
           >
@@ -253,13 +253,13 @@ function Collection({
   return (
     <section>
       <div className="mt-8 flex items-end justify-between">
-        <h2 className="font-display text-[26px] text-ink">The Collection</h2>
+        <h2 className="font-display text-[26px] text-ink sm:text-[34px]">The Collection</h2>
         <span className="text-[11px] uppercase tracking-[0.28em] text-branddeep/50">
           {String(perfumes.length).padStart(2, "0")} pieces
         </span>
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
         {perfumes.map((p) => (
           <article
             key={p.id}
@@ -341,7 +341,7 @@ function PerfumeModal({
         onClick={onClose}
         className="absolute inset-0 bg-primary/25 backdrop-blur-md"
       />
-      <div className="glass relative mx-3 mb-3 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-border p-5 shadow-[0_24px_70px_rgba(66,86,138,0.3)] sm:mx-0 sm:mb-0">
+      <div className="glass relative mx-3 mb-3 max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-border p-5 shadow-[0_24px_70px_rgba(66,86,138,0.3)] sm:mx-0 sm:mb-0 sm:max-w-lg sm:p-7">
         <button
           onClick={onClose}
           className="glass absolute right-4 top-4 z-10 grid size-10 place-items-center rounded-full border border-border text-branddeep shadow-[0_4px_16px_rgba(66,86,138,0.18)]"
@@ -450,7 +450,7 @@ function CartDrawer({
           open ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <div className="glass mx-auto max-w-md rounded-t-3xl border border-border p-4 shadow-[0_-14px_44px_rgba(66,86,138,0.22)]">
+        <div className="glass mx-auto max-w-md rounded-t-3xl border border-border p-4 shadow-[0_-14px_44px_rgba(66,86,138,0.22)] sm:max-w-xl sm:p-6">
           <div className="flex items-center justify-between">
             <p className="text-[11px] uppercase tracking-[0.3em] text-branddeep/60">
               Your Cart · {cart.reduce((sum, line) => sum + line.qty, 0)}
