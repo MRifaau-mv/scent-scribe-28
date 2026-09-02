@@ -216,12 +216,10 @@ function Hero({
 
 function Collection({
   perfumes,
-  selectedId,
   onSelect,
   onQuickAdd,
 }: {
   perfumes: Perfume[];
-  selectedId: string;
   onSelect: (p: Perfume) => void;
   onQuickAdd: (p: Perfume) => void;
 }) {
@@ -252,9 +250,7 @@ function Collection({
                   loading="lazy"
                   width={1024}
                   height={1024}
-                  className={`h-full w-full object-cover transition-transform duration-500 hover:scale-105 ${
-                    p.id === selectedId ? "ring-2 ring-gold" : ""
-                  }`}
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                 />
               </div>
               <p className="mt-3 text-[9px] uppercase tracking-[0.24em] text-gold">
