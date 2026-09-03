@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { perfumes, type Perfume } from "@/lib/products";
+import { useCart, type CartLine } from "@/lib/cart";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,43 +24,15 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-interface CartLine {
-  perfume: Perfume;
-  qty: number;
-}
-
 function Index() {
-  const [cart, setCart] = useState<CartLine[]>([]);
+  const { cart, cartCount, subtotal, addToCart, changeQty } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [viewing, setViewing] = useState<Perfume | null>(null);
   const [detailQty, setDetailQty] = useState(1);
 
-  const cartCount = cart.reduce((sum, line) => sum + line.qty, 0);
-  const subtotal = cart.reduce((sum, line) => sum + line.qty * line.perfume.price, 0);
-
-  const addToCart = (perfume: Perfume, qty: number) => {
-    setCart((prev) => {
-      const existing = cart.find((line) => line.perfume.id === perfume.id);
-      if (existing) {
-        return cart.map((line) =>
-          line.perfume.id === perfume.id
-            ? { ...line, qty: line.qty + qty }
-            : line,
-        );
-      }
-      return [...cart, { perfume, qty }];
-    });
+  const addAndOpen = (perfume: Perfume, qty: number) => {
+    addToCart(perfume, qty);
     setCartOpen(true);
-  };
-
-  const changeQty = (id: string, delta: number) => {
-    setCart((prev) =>
-      prev
-        .map((line) =>
-          line.perfume.id === id ? { ...line, qty: line.qty + delta } : line,
-        )
-        .filter((line) => line.qty > 0),
-    );
   };
 
   const openDetails = (perfume: Perfume) => {
@@ -94,7 +67,7 @@ function Index() {
         <Collection
           perfumes={perfumes}
           onSelect={openDetails}
-          onQuickAdd={(p) => addToCart(p, 1)}
+          onQuickAdd={(p) => addAndOpen(p, 1)}
         />
       </main>
 
@@ -106,7 +79,7 @@ function Index() {
           onQtyChange={setDetailQty}
           onClose={() => setViewing(null)}
           onAdd={() => {
-            addToCart(viewing, detailQty);
+            addAndOpen(viewing, detailQty);
             setViewing(null);
           }}
         />
@@ -453,6 +426,7 @@ function CartDrawer({
   onClose: () => void;
   onChangeQty: (id: string, delta: number) => void;
 }) {
+  const navigate = useNavigate();
   return (
     <div
       className={`fixed inset-0 z-40 transition-opacity duration-300 ${
@@ -539,7 +513,13 @@ function CartDrawer({
                   ${subtotal}
                 </span>
               </div>
-              <button className="h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta">
+              <button
+                onClick={() => {
+                  onClose();
+                  navigate({ to: "/order" });
+                }}
+                className="h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta"
+              >
                 Checkout
               </button>
               <p className="text-center text-[10px] uppercase tracking-[0.2em] text-ink/40">
