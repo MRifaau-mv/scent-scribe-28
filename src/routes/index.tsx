@@ -192,48 +192,69 @@ function ProductSlider({
     el.scrollTo({ left: i * stepOf(el), behavior: "smooth" });
   };
 
+  useEffect(() => {
+    const id = setInterval(() => {
+      const el = trackRef.current;
+      if (!el) return;
+      const next = (Math.round(el.scrollLeft / stepOf(el)) + 1) % perfumes.length;
+      el.scrollTo({ left: next * stepOf(el), behavior: "smooth" });
+    }, 6000);
+    return () => clearInterval(id);
+  }, [perfumes.length]);
+
   return (
-    <section className="mt-4" aria-label="Featured fragrances">
+    <section className="relative mt-3" aria-label="Featured fragrances">
       <div
         ref={trackRef}
         onScroll={handleScroll}
-        className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {perfumes.map((p, i) => (
-          <button
+          <div
             key={p.id}
-            onClick={() => onSelect(p)}
-            aria-label={`View details of ${p.name}`}
-            className={`w-[82%] shrink-0 snap-center overflow-hidden rounded-3xl border border-border shadow-glass transition-opacity duration-500 sm:w-[52%] lg:w-[40%] ${
-              i === active ? "opacity-100" : "opacity-70"
-            }`}
+            className="relative h-[62vh] max-h-[560px] min-h-[380px] w-full shrink-0 snap-center overflow-hidden sm:h-[70vh] sm:max-h-[680px]"
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden">
-              <img
-                src={p.image}
-                alt={`${p.name} ${p.italicName ?? ""} flacon`}
-                width={1024}
-                height={1024}
-                loading={i === 0 ? "eager" : "lazy"}
-                className="h-full w-full object-cover"
-              />
-              <h2 className="glass absolute bottom-3 left-3 rounded-full border border-border px-3.5 py-1.5 font-display text-[15px] text-branddeep shadow-[0_4px_16px_rgba(66,86,138,0.16)]">
+            <img
+              src={p.image}
+              alt={`${p.name} ${p.italicName ?? ""} flacon`}
+              width={1024}
+              height={1024}
+              loading={i === 0 ? "eager" : "lazy"}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/25 to-ink/10" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+              <p className="text-[10px] uppercase tracking-[0.42em] text-primary-foreground/75">
+                {p.number} — {p.family}
+              </p>
+              <h2 className="mt-3 font-display text-[40px] leading-[0.95] text-primary-foreground sm:text-[68px]">
                 {p.name}
                 {p.italicName && <span className="italic"> {p.italicName}</span>}
               </h2>
+              <p className="mt-3 max-w-md text-[13px] text-primary-foreground/85 sm:text-[15px]">
+                {p.description}
+              </p>
+              <button
+                onClick={() => onSelect(p)}
+                className="glass mt-6 rounded-full border border-border px-8 py-3 text-[12px] uppercase tracking-[0.28em] text-branddeep shadow-cta transition-transform duration-300 hover:-translate-y-0.5"
+              >
+                Discover
+              </button>
             </div>
-          </button>
+          </div>
         ))}
       </div>
 
-      <div className="mt-3 flex items-center justify-center gap-2">
+      <div className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-2">
         {perfumes.map((p, i) => (
           <button
             key={p.id}
             onClick={() => goTo(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === active ? "w-6 bg-branddeep" : "w-1.5 bg-branddeep/30"
+              i === active
+                ? "w-6 bg-primary-foreground"
+                : "w-1.5 bg-primary-foreground/45"
             }`}
           />
         ))}
@@ -241,6 +262,7 @@ function ProductSlider({
     </section>
   );
 }
+
 
 function Collection({
   perfumes,
