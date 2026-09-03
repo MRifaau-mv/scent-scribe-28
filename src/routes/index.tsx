@@ -220,7 +220,7 @@ function ProductSlider({
               loading={i === 0 ? "eager" : "lazy"}
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/25 to-ink/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/50 to-ink/25" />
             <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
               <p className="text-[10px] uppercase tracking-[0.42em] text-primary-foreground/75">
                 {p.number} — {p.family}
