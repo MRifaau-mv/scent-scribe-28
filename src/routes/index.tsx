@@ -170,10 +170,8 @@ function ProductSlider({
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
-  const stepOf = (el: HTMLDivElement) =>
-    el.firstElementChild instanceof HTMLElement
-      ? el.firstElementChild.offsetWidth + 12
-      : el.clientWidth;
+  const stepOf = (el: HTMLDivElement) => el.clientWidth;
+
 
   const handleScroll = () => {
     const el = trackRef.current;
