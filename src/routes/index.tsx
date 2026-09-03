@@ -426,6 +426,7 @@ function CartDrawer({
   onClose: () => void;
   onChangeQty: (id: string, delta: number) => void;
 }) {
+  const navigate = useNavigate();
   return (
     <div
       className={`fixed inset-0 z-40 transition-opacity duration-300 ${
@@ -512,7 +513,13 @@ function CartDrawer({
                   ${subtotal}
                 </span>
               </div>
-              <button className="h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta">
+              <button
+                onClick={() => {
+                  onClose();
+                  navigate({ to: "/order" });
+                }}
+                className="h-12 w-full rounded-full bg-branddeep text-[13px] uppercase tracking-[0.2em] text-primary-foreground shadow-cta"
+              >
                 Checkout
               </button>
               <p className="text-center text-[10px] uppercase tracking-[0.2em] text-ink/40">
