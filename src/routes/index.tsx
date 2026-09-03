@@ -88,15 +88,16 @@ function Index() {
 
       <Header cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
 
-      <main className="mx-auto max-w-md px-3 pb-40 sm:max-w-3xl sm:px-6 lg:max-w-5xl">
-        <ProductSlider perfumes={perfumes} onSelect={openDetails} />
+      <ProductSlider perfumes={perfumes} onSelect={openDetails} />
 
+      <main className="mx-auto max-w-md px-3 pb-40 sm:max-w-3xl sm:px-6 lg:max-w-5xl">
         <Collection
           perfumes={perfumes}
           onSelect={openDetails}
           onQuickAdd={(p) => addToCart(p, 1)}
         />
       </main>
+
 
       {viewing && (
         <PerfumeModal
